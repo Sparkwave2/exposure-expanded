@@ -30,9 +30,12 @@ public final class ExposureExpanded {
 
     public static final Logger LOGGER = LoggerFactory.getLogger("Exposure: Expanded");
 
+    public static boolean is_polaroid_loaded = true;
+
     public static void init() {
         try {
             if (Platform.getMod("exposure_polaroid") != null){
+                is_polaroid_loaded = false;
                 POLAROID_ITEMS.register();
                 LOGGER.info("Exposure Polaroid hook successful.");
             }
@@ -42,7 +45,6 @@ public final class ExposureExpanded {
         }
         ITEMS.register();
     }
-
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(MOD_ID, Registries.ITEM);
     public static final DeferredRegister<Item> POLAROID_ITEMS = DeferredRegister.create(MOD_ID, Registries.ITEM);
 
@@ -64,18 +66,22 @@ public final class ExposureExpanded {
             new FilmRollItem(ExposureType.COLOR, 16711935, new Item.Properties().arch$tab(ResourceKey.create(Registries.CREATIVE_MODE_TAB, Exposure.resource("exposure"))).stacksTo(16)
                     .component(Exposure.DataComponents.FILM_COLOR_PALETTE, ResourceLocation.fromNamespaceAndPath(MOD_ID, "cga"))));
 
-    public static final RegistrySupplier<Item> INSTANT_GAMEBOY_SLIDE = POLAROID_ITEMS.register("instant_gameboy_slide", () ->
-            new InstantSlideItem(ExposureType.COLOR, new Item.Properties().arch$tab(ResourceKey.create(Registries.CREATIVE_MODE_TAB, Exposure.resource("exposure")))
-                    .component(Exposure.DataComponents.FILM_COLOR_PALETTE, ResourceLocation.fromNamespaceAndPath(MOD_ID, "gameboy"))));
-    public static final RegistrySupplier<Item> INSTANT_NES_SLIDE = POLAROID_ITEMS.register("instant_nes_slide", () ->
-            new InstantSlideItem(ExposureType.COLOR, new Item.Properties().arch$tab(ResourceKey.create(Registries.CREATIVE_MODE_TAB, Exposure.resource("exposure")))
-                    .component(Exposure.DataComponents.FILM_COLOR_PALETTE, ResourceLocation.fromNamespaceAndPath(MOD_ID, "nes"))));
-    public static final RegistrySupplier<Item> INSTANT_C64_SLIDE = POLAROID_ITEMS.register("instant_c64_slide", () ->
-            new InstantSlideItem(ExposureType.COLOR, new Item.Properties().arch$tab(ResourceKey.create(Registries.CREATIVE_MODE_TAB, Exposure.resource("exposure")))
-                    .component(Exposure.DataComponents.FILM_COLOR_PALETTE, ResourceLocation.fromNamespaceAndPath(MOD_ID, "c64"))));
-    public static final RegistrySupplier<Item> INSTANT_CGA_SLIDE = POLAROID_ITEMS.register("instant_cga_slide", () ->
-            new InstantSlideItem(ExposureType.COLOR, new Item.Properties().arch$tab(ResourceKey.create(Registries.CREATIVE_MODE_TAB, Exposure.resource("exposure")))
-                    .component(Exposure.DataComponents.FILM_COLOR_PALETTE, ResourceLocation.fromNamespaceAndPath(MOD_ID, "cga"))));
+    public static final RegistrySupplier<Item> INSTANT_GAMEBOY_SLIDE = POLAROID_ITEMS.register("instant_gameboy_slide", () -> is_polaroid_loaded?
+            PolaroidHandler.create_item(ExposureType.COLOR, new Item.Properties().arch$tab(ResourceKey.create(Registries.CREATIVE_MODE_TAB, Exposure.resource("exposure")))
+                    .component(Exposure.DataComponents.FILM_COLOR_PALETTE, ResourceLocation.fromNamespaceAndPath(MOD_ID, "gameboy")))
+            : new Item(new Item.Properties()));
+    public static final RegistrySupplier<Item> INSTANT_NES_SLIDE = POLAROID_ITEMS.register("instant_nes_slide", () -> is_polaroid_loaded?
+            PolaroidHandler.create_item(ExposureType.COLOR, new Item.Properties().arch$tab(ResourceKey.create(Registries.CREATIVE_MODE_TAB, Exposure.resource("exposure")))
+                    .component(Exposure.DataComponents.FILM_COLOR_PALETTE, ResourceLocation.fromNamespaceAndPath(MOD_ID, "nes")))
+            : new Item(new Item.Properties()));
+    public static final RegistrySupplier<Item> INSTANT_C64_SLIDE = POLAROID_ITEMS.register("instant_c64_slide", () -> is_polaroid_loaded?
+            PolaroidHandler.create_item(ExposureType.COLOR, new Item.Properties().arch$tab(ResourceKey.create(Registries.CREATIVE_MODE_TAB, Exposure.resource("exposure")))
+                    .component(Exposure.DataComponents.FILM_COLOR_PALETTE, ResourceLocation.fromNamespaceAndPath(MOD_ID, "c64")))
+            : new Item(new Item.Properties()));
+    public static final RegistrySupplier<Item> INSTANT_CGA_SLIDE = POLAROID_ITEMS.register("instant_cga_slide", () -> is_polaroid_loaded?
+            PolaroidHandler.create_item(ExposureType.COLOR, new Item.Properties().arch$tab(ResourceKey.create(Registries.CREATIVE_MODE_TAB, Exposure.resource("exposure")))
+                    .component(Exposure.DataComponents.FILM_COLOR_PALETTE, ResourceLocation.fromNamespaceAndPath(MOD_ID, "cga")))
+            : new Item(new Item.Properties()));
 
     public static final RegistrySupplier<Item> HICAP_BLACK_AND_WHITE_FILM = ITEMS.register("hicap_black_and_white_film", () ->
             new FilmRollItem(ExposureType.BLACK_AND_WHITE, FilmRollItem.BAR_BLACK_AND_WHITE, new Item.Properties().arch$tab(ResourceKey.create(Registries.CREATIVE_MODE_TAB, Exposure.resource("exposure"))).stacksTo(16)
@@ -90,22 +96,24 @@ public final class ExposureExpanded {
     public static final RegistrySupplier<Item> HIRES_COLOR_FILM = ITEMS.register("hires_color_film", () ->
             new FilmRollItem(ExposureType.COLOR, FilmRollItem.BAR_COLOR, new Item.Properties().arch$tab(ResourceKey.create(Registries.CREATIVE_MODE_TAB, Exposure.resource("exposure"))).stacksTo(16)
                     .component(Exposure.DataComponents.FILM_FRAME_SIZE, 640)));
-    public static final RegistrySupplier<Item> INSTANT_HIRES_BLACK_AND_WHITE_SLIDE = POLAROID_ITEMS.register("instant_hires_black_and_white_slide", () ->
-            new InstantSlideItem(ExposureType.BLACK_AND_WHITE, (new Item.Properties().arch$tab(ResourceKey.create(Registries.CREATIVE_MODE_TAB, Exposure.resource("exposure"))))
+    public static final RegistrySupplier<Item> INSTANT_HIRES_BLACK_AND_WHITE_SLIDE = POLAROID_ITEMS.register("instant_hires_black_and_white_slide", () -> is_polaroid_loaded?
+            PolaroidHandler.create_item(ExposureType.BLACK_AND_WHITE, (new Item.Properties().arch$tab(ResourceKey.create(Registries.CREATIVE_MODE_TAB, Exposure.resource("exposure"))))
                     .component(io.github.mortuusars.exposure.Exposure.DataComponents.FILM_STYLE, FilmStyle.create()
                             .withContrast(0.2F)
                             .withLevels(new Levels(0, 135, 255, 25, 255))
                             .withHSB(new HSB(0.0F, 0.05F, 0.05F))
                             .withColorBalance(new ColorBalance(0.03F, 0.01F, -0.01F)))
-                    .component(Exposure.DataComponents.FILM_FRAME_SIZE, 480)));
-    public static final RegistrySupplier<Item> INSTANT_HIRES_COLOR_SLIDE = POLAROID_ITEMS.register("instant_hires_color_slide", () ->
-            new InstantSlideItem(ExposureType.COLOR, (new Item.Properties().arch$tab(ResourceKey.create(Registries.CREATIVE_MODE_TAB, Exposure.resource("exposure"))))
+                    .component(Exposure.DataComponents.FILM_FRAME_SIZE, 480))
+            : new Item(new Item.Properties()));
+    public static final RegistrySupplier<Item> INSTANT_HIRES_COLOR_SLIDE = POLAROID_ITEMS.register("instant_hires_color_slide", () -> is_polaroid_loaded?
+            PolaroidHandler.create_item(ExposureType.COLOR, (new Item.Properties().arch$tab(ResourceKey.create(Registries.CREATIVE_MODE_TAB, Exposure.resource("exposure"))))
                     .component(io.github.mortuusars.exposure.Exposure.DataComponents.FILM_STYLE, FilmStyle.create()
                             .withContrast(0.2F)
                             .withLevels(new Levels(0, 135, 255, 25, 255))
                             .withHSB(new HSB(0.0F, 0.05F, 0.05F))
                             .withColorBalance(new ColorBalance(0.03F, 0.01F, -0.01F)))
-                    .component(Exposure.DataComponents.FILM_FRAME_SIZE, 480)));
+                    .component(Exposure.DataComponents.FILM_FRAME_SIZE, 480))
+            : new Item(new Item.Properties()));
 
     public static final RegistrySupplier<Item> ANTIALIAS_FILTER = ITEMS.register("antialias_filter", () ->
             new ItemWith2ShiftTooltips(new Item.Properties().arch$tab(ResourceKey.create(Registries.CREATIVE_MODE_TAB, Exposure.resource("exposure"))),

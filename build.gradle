@@ -69,7 +69,7 @@ subprojects {
         minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
         mappings loom.officialMojangMappings()
         modImplementation("io.github.mortuusars.exposure:exposure-${minecraft_version}-neoforge:${exposure_version}")
-        modImplementation("io.github.mortuusars.exposure_polaroid:exposure_polaroid-${minecraft_version}-neoforge:${exposure_polaroid_version}")
+        modCompileOnly("io.github.mortuusars.exposure_polaroid:exposure_polaroid-${minecraft_version}-neoforge:${exposure_polaroid_version}")
     }
 
     java {

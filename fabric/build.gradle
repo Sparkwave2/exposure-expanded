@@ -48,7 +48,7 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_api_version}")
     modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_api_port_version}")
     modImplementation("io.github.mortuusars.exposure:exposure-${minecraft_version}-fabric:${exposure_version}")
-    modImplementation("io.github.mortuusars.exposure_polaroid:exposure_polaroid-${minecraft_version}-fabric:${exposure_polaroid_version}")
+    modCompileOnly("io.github.mortuusars.exposure_polaroid:exposure_polaroid-${minecraft_version}-fabric:${exposure_polaroid_version}")
 
     modRuntimeOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
     modRuntimeOnly("io.github.mortuusars.exposure_catalog:exposure_catalog-fabric:${minecraft_version}-${exposure_catalog_version}")
