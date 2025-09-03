@@ -7,9 +7,9 @@ license = "MIT"
 modId = "exposure_expanded"
 version = "${version}"
 displayName = "Exposure: Expanded"
-authors = "Sparkwave, JohnRamRu"
+authors = "Sparkwave"
 description = '''
-Addon for Exposure that adds new lenses, filters and films.
+Addon for Exposure that adds new lenses, filters and films..
 '''
 #logoFile = ""
 
